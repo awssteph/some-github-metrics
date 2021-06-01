@@ -31,16 +31,21 @@ def test_push_access(organization, authToken):
     for orgs in allorgs:
         if orgs.login == organization:
             print("Checking push access for", orgs.name, "repositories. \n")
-            for repo in orgs.get_repos():
-                if repo.fork == False and repo.private == False:
-                    currentrepo = repo.name
-                    r = s.get("https://api.github.com/repos/" + organization + "/" + currentrepo + "/traffic/views")
-                    r_views = json.loads(r.text)
-                    try:
-                        if r_views["message"] == "Must have push access to repository":
-                            repos_noaccess.append(currentrepo)
-                    except:
-                        repos_ok.append(currentrepo)
+            
+            optics_repo =["well-architected-lab300-aws-organization-data-terraform-module", "aws-cost-explorer-rightsizing-recommendations-collector-cf"]
+            for currentrepo in optics_repo: #orgs.get_repos():
+                #if repo.fork == False and repo.private == False:
+                    #currentrepo = repo.name
+                
+                r = s.get("https://api.github.com/repos/" + organization + "/" + currentrepo + "/traffic/views")
+                r_views = json.loads(r.text)
+                #import pdb; pdb.set_trace()
+                try:
+                    if r_views["message"] == "Must have push access to repository":
+                        repos_noaccess.append(currentrepo)
+                except:
+                    repos_ok.append(currentrepo)
+    
     return repos_noaccess, repos_ok
 
 
@@ -214,8 +219,8 @@ def main():
         print("")
         export_traffic(directory, organization, repos_ok, authToken)
         print("")
-        print("Repos with over 25 stars without push access:")
-        print(relevantrepos_noaccess(25, repos_noaccess, organization, authToken))
+        #print("Repos with over 25 stars without push access:")
+        #print(relevantrepos_noaccess(25, repos_noaccess, organization, authToken))
 
     except:
         print("Could not complete tasks.")
