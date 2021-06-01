@@ -17,3 +17,4 @@ metrics-env/**
 output/**
 update_gsheet.py
 *.csv
+*.venv
