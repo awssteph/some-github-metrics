@@ -25,6 +25,14 @@ In order to be able to run this project you have to
 
 There are 2 Python scripts. Their usage and purposes are described below.
 
+
+## OPTICS
+
+Update the repos.json with new repos we have.
+
+python export_traffic_op.py -t <toeken> -o aws-samples
+
+
 ### FIRST SCRIPT
 
 You execute the file on command line (terminal, bash, whatever you name it) by typing:
